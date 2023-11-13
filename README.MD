@@ -19,15 +19,19 @@ The LXC Container Privilege Converter is a Bash script designed for Proxmox Virt
 
 ## Installation
 1. **Clone the repository:**
+
 git clone https://github.com/onethree7/proxmox-lxc-privilege-converter
 
 2. **Navigate to the script directory:**
+
 cd proxmox-lxc-privilege-converter
 
 3. **Make the script executable:**
+
 chmod +x lxc_privilege_converter.sh
 
-4. **Or Quickstart as below: **
+4. **Or Quickstart as below:**
+
 wget -qO- https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh | sudo bash
 
 Follow the interactive prompts to select the source container, backup storage, target storage, and manage the conversion process.
@@ -52,7 +56,7 @@ Contributions to improve the script or add new features are welcome.
 This project is licensed under the GPL-3.0 License
 
 ## Author
-** Florian Kefferpuetz**  - Initial work.
+**Florian Kefferpuetz**  - Initial work.
 
 ## Acknowledgments
 Thanks to Proxmox Team and tteck for the useful scripts at https://github.com/tteck/Proxmox 
