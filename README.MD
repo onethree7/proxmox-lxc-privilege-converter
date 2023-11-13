@@ -30,7 +30,11 @@ cd proxmox-lxc-privilege-converter
 
 chmod +x lxc_privilege_converter.sh
 
-4. **Or Quickstart as below:**
+4. **Run the script with root credentials**
+
+sudo ./lxc_privilege_converter.sh
+
+5. **Or Quickstart as below:**
 
 wget -qO- https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh | sudo bash
 
