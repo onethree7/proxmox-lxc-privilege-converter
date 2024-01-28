@@ -104,7 +104,7 @@ select_target_storage() {
 # find the next free ID
 find_next_free_id() {
     local existing_ids
-    existing_ids=$({ pct list | awk 'NR>1 {print $1}'; qm list | awk 'NR>1 {print $1}'; } | sort -un)
+    existing_ids=$({ pvesh get /cluster/resources --type vm --output-format text | awk -F'│' '/lxc|qemu/ { print $2 }' | awk -F'/' '{ print $2 }' | tr -d ' '; } | sort -un)
 
     local id=100
     while true; do
