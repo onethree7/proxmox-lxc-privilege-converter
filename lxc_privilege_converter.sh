@@ -21,7 +21,7 @@ ______________   _______________         .____     ____  ____________
      _/ ___\/  _ \ /    \  \/ // __ \_  __ \   __\/ __ \_  __ \        
      \  \__(  <_> )   |  \   /\  ___/|  | \/|  | \  ___/|  | \/        
       \___  >____/|___|  /\_/  \___  >__|   |__|  \___  >__|           
-          \/           \/          \/                 \/       v1.01   
+          \/           \/          \/                 \/       v1.0.2  
          Welcome to the Proxmox LXC Privilege Converter Script!
     This script simplifies the process of converting LXC containers for
 privileged and unprivileged modes using the vzdump backup and restore method. 
