@@ -3,6 +3,9 @@
 All notable changes to the "proxmox-lxc-privilege-converter" project will be documented in this file.
 
 
+## [1.0.3] - 2024-01-29
+### Changed
+- Completley simplified `find_next_free_id()` logfic with `pvesh get /cluster/nextid` now. One command to replace the function.
 
 ## [1.0.2] - 2024-01-29
 ### Changed

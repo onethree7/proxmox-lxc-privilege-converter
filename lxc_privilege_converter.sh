@@ -21,7 +21,7 @@ ______________   _______________         .____     ____  ____________
      _/ ___\/  _ \ /    \  \/ // __ \_  __ \   __\/ __ \_  __ \        
      \  \__(  <_> )   |  \   /\  ___/|  | \/|  | \  ___/|  | \/        
       \___  >____/|___|  /\_/  \___  >__|   |__|  \___  >__|           
-          \/           \/          \/                 \/       v1.0.2  
+          \/           \/          \/                 \/       v1.0.3  
          Welcome to the Proxmox LXC Privilege Converter Script!
     This script simplifies the process of converting LXC containers for
 privileged and unprivileged modes using the vzdump backup and restore method. 
@@ -101,19 +101,9 @@ select_target_storage() {
     done
 }
 
-# find the next free ID
+# find the next free ID using pvesh
 find_next_free_id() {
-    local existing_ids
-    existing_ids=$({ pvesh get /cluster/resources --type vm --output-format text | awk -F'│' '/lxc|qemu/ { print $2 }' | awk -F'/' '{ print $2 }' | tr -d ' '; } | sort -un)
-
-    local id=100
-    while true; do
-        if ! grep -q "^$id$" <<< "$existing_ids"; then
-            echo "$id"
-            break
-        fi
-        ((id++))
-    done
+    pvesh get /cluster/nextid
 }
 
 # perform conversion
