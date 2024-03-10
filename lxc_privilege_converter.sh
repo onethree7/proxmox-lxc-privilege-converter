@@ -1,5 +1,40 @@
 #!/bin/bash
 
+# help message
+show_help() {
+    cat << EOF
+
+Converts LXC containers between privileged and unprivileged modes using vzdump. Ensure sufficient Proxmox VE storage.
+
+Run:
+- bash ${0##*/}
+- chmod +x ${0##*/} && ./${0##*/}
+
+Steps:
+1. Choose an LXC.
+2. Select backup storage.
+3. Backup and choose new container's storage.
+4. Convert and manage states.
+
+-h, --help   Show this message
+
+Details: https://github.com/onethree7/proxmox-lxc-privilege-converter
+EOF
+}
+
+# Did user use -h or --help?
+while :; do
+    case $1 in
+        -h|--help)
+            show_help
+            exit
+            ;;
+        *)
+            break
+    esac
+    shift
+done
+
 # print banner
 banner() {
     clear
@@ -21,7 +56,7 @@ ______________   _______________         .____     ____  ____________
      _/ ___\/  _ \ /    \  \/ // __ \_  __ \   __\/ __ \_  __ \        
      \  \__(  <_> )   |  \   /\  ___/|  | \/|  | \  ___/|  | \/        
       \___  >____/|___|  /\_/  \___  >__|   |__|  \___  >__|           
-          \/           \/          \/                 \/       v1.0.3  
+          \/           \/          \/                 \/       v1.0.4  
          Welcome to the Proxmox LXC Privilege Converter Script!
     This script simplifies the process of converting LXC containers for
 privileged and unprivileged modes using the vzdump backup and restore method. 
@@ -213,12 +248,8 @@ summarize_actions() {
     echo "Target Storage for New Container: $TARGET_STORAGE"
     echo "New Container: $NEW_CONTAINER_ID ($CONTAINER_NAME)"
     echo "Privilege Conversion: $(if [ "$UNPRIVILEGED_FLAG" = true ]; then echo "Unprivileged to Privileged"; else echo "Privileged to Unprivileged"; fi)"
-    if [ "$statechange_choice" = "Y" ] || [ "$statechange_choice" = "y" ]; then
-        echo "Container State Changes: Source Stopped, Target Started"
-    else
-        echo "Container State Changes: No Changes Made"
-    fi
-    echo "Cleanup of Temporary Files: $(if [ "$cleanup_choice" = "Y" ] || [ "$cleanup_choice" = "y" ]; then echo "Performed"; else echo "Skipped"; fi)"
+    echo "Container State Changes: $(if [[ $statechange_choice =~ ^[Yy]([Ee][Ss])?$ ]]; then echo "Source Stopped, Target Started"; else echo "No Changes Made"; fi)"
+    echo "Cleanup of Temporary Files: $(if [[ $cleanup_choice =~ ^[Yy]([Ee][Ss])?$ ]]; then echo "Performed"; else echo "Skipped"; fi)"
     echo -e "==================================================\n"
 }
 

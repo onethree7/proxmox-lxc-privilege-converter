@@ -2,6 +2,13 @@
 
 All notable changes to the "proxmox-lxc-privilege-converter" project will be documented in this file.
 
+## [1.0.4] - 2024-03-10
+### Fixed
+- Unified regex for affirmative input checks, addressing inconsistencies.
+
+### Improved
+- Refined feedback in `summarize_actions` to align with actual operations performed.
+- Added minimal help function (-h --help)
 
 ## [1.0.3] - 2024-01-29
 ### Changed
