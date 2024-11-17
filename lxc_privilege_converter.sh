@@ -141,6 +141,25 @@ find_next_free_id() {
     pvesh get /cluster/nextid
 }
 
+# select ID for the new container
+select_container_id() {
+    next_free_id=$(find_next_free_id)
+    while true; do
+	read -r -p "Select the new container ID [$next_free_id]: " NEW_CONTAINER_ID
+
+	if [ -z "$NEW_CONTAINER_ID" ]; then
+	    NEW_CONTAINER_ID=$next_free_id
+	    break
+	fi
+
+	if pct list | grep -q "^$NEW_CONTAINER_ID "; then
+	    echo "Already used container ID. Please try again."
+	else
+	    break
+	fi
+    done
+}
+
 # perform conversion
 perform_conversion() {
     if pct config "$CONTAINER_ID" | grep -q 'unprivileged: 1'; then
@@ -150,8 +169,6 @@ perform_conversion() {
         UNPRIVILEGED_FLAG=false
         echo "Container $CONTAINER_ID is currently privileged."
     fi
-
-    NEW_CONTAINER_ID=$(find_next_free_id)
 
     if $UNPRIVILEGED_FLAG; then
         echo -e "Converting unprivileged container $CONTAINER_ID to privileged container $NEW_CONTAINER_ID...\n"
@@ -260,6 +277,7 @@ main() {
     select_backup_storage
     backup_container
     select_target_storage
+    select_container_id
     perform_conversion
     manage_lxc_states
     cleanup_temp_files
