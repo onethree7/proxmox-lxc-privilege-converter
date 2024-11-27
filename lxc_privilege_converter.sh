@@ -56,7 +56,7 @@ ______________   _______________         .____     ____  ____________
      _/ ___\/  _ \ /    \  \/ // __ \_  __ \   __\/ __ \_  __ \        
      \  \__(  <_> )   |  \   /\  ___/|  | \/|  | \  ___/|  | \/        
       \___  >____/|___|  /\_/  \___  >__|   |__|  \___  >__|           
-          \/           \/          \/                 \/       v1.0.4  
+          \/           \/          \/                 \/       v1.0.5  
          Welcome to the Proxmox LXC Privilege Converter Script!
     This script simplifies the process of converting LXC containers for
 privileged and unprivileged modes using the vzdump backup and restore method. 
@@ -141,6 +141,37 @@ find_next_free_id() {
     pvesh get /cluster/nextid
 }
 
+# find all used VM and LXC IDs using pvesh
+get_used_ids() {
+    USED_IDS=()
+    IDS_OUTPUT=$(pvesh get /cluster/resources --type vm --output-format json-pretty | grep -E "vmid" | grep -Eo '[0-9]+')
+    while IFS= read -r vmid; do
+        USED_IDS+=("$vmid")
+    done <<< "$IDS_OUTPUT"
+}
+
+# select ID for the new container
+select_container_id() {
+    next_free_id=$(find_next_free_id)
+    get_used_ids
+    while true; do
+        # Prompt the user and set default value if input is empty
+        read -r -p "Enter a new container ID (or press Enter to use next free ID [$next_free_id]): " NEW_CONTAINER_ID
+        NEW_CONTAINER_ID=${NEW_CONTAINER_ID:-$next_free_id}
+
+        # Is ID already in use and did user give valid input?
+        if [[ "$NEW_CONTAINER_ID" =~ ^[0-9]+$ ]] && [[ ! " ${USED_IDS[@]} " =~ " ${NEW_CONTAINER_ID} " ]]; then
+            break
+        fi
+
+        if ! [[ "$NEW_CONTAINER_ID" =~ ^[0-9]+$ ]]; then
+            echo "Invalid input. Please enter a valid numeric container ID."
+        elif [[ " ${USED_IDS[@]} " =~ " ${NEW_CONTAINER_ID} " ]]; then
+            echo "Already used container ID. Please try again."
+        fi
+    done
+}
+
 # perform conversion
 perform_conversion() {
     if pct config "$CONTAINER_ID" | grep -q 'unprivileged: 1'; then
@@ -150,8 +181,6 @@ perform_conversion() {
         UNPRIVILEGED_FLAG=false
         echo "Container $CONTAINER_ID is currently privileged."
     fi
-
-    NEW_CONTAINER_ID=$(find_next_free_id)
 
     if $UNPRIVILEGED_FLAG; then
         echo -e "Converting unprivileged container $CONTAINER_ID to privileged container $NEW_CONTAINER_ID...\n"
@@ -260,6 +289,7 @@ main() {
     select_backup_storage
     backup_container
     select_target_storage
+    select_container_id
     perform_conversion
     manage_lxc_states
     cleanup_temp_files

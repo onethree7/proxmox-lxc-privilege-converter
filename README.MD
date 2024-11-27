@@ -1,24 +1,29 @@
 # LXC Container Privilege Converter
 
 ## Overview
-The LXC Container Privilege Converter is a Bash script designed for Proxmox Virtual Environment. It facilitates the conversion of LXC containers between privileged and unprivileged states. This script automates the process of backing up an existing container, restoring it to a new container with the desired privilege level, and managing the state of both the source and target containers.
+
+The LXC Container Privilege Converter is a Bash script designed for the Proxmox Virtual Environment (PVE). It facilitates the conversion of LXC containers between privileged and unprivileged states. This script automates the process of backing up an existing container, restoring it to a new container with the desired privilege mode, and manages container states seamlessly.
 
 ## Features
-- **Interactive Selection**: Easy-to-use interactive prompts for selecting containers, backup, and target storages.
-- **Automated Backup and Restore**: Automates the vzdump backup process and restores to a new container.
+
+- **Interactive Selection**: Easy-to-use interactive prompts for selecting containers, backup storage, and target storage.
+- **Custom Container ID Selection**: Specify a new container ID during the conversion process, with validation to prevent ID conflicts across the cluster.
+- **Cluster-Aware ID Retrieval**: Automatically retrieves all used VM and LXC IDs across the cluster to prevent ID conflicts.
+- **Automated Backup and Restore**: Automates the `vzdump` backup process and restores to a new container.
 - **Privilege Level Conversion**: Converts containers from unprivileged to privileged and vice versa.
-- **State Management**: Manages the states of the source and target containers, including shutdown and startup.
+- **State Management**: Manages the states of the source and target containers, including shutdown and startup options.
 - **Cleanup Options**: Offers options to clean up temporary backup files after conversion.
+- **Enhanced Help Message**: Access detailed usage instructions via `-h` or `--help` flags.
 
 ## Prerequisites
+
 - **Proxmox Virtual Environment**
 - **Root access on the Proxmox server**
 - **LXC containers set up within Proxmox**
 - **Enough free space on Backup and Target Storage**
 - **LXC containers can be snapshotted in general**
 
-## Installation
-1. **Clone the repository:**
+## Installation1. **Clone the repository:**
 
 git clone https://github.com/onethree7/proxmox-lxc-privilege-converter
 
@@ -42,13 +47,21 @@ Follow the interactive prompts to select the source container, backup storage, t
 
 ## Script Workflow
 - **Check Root Access**: Ensures the script is run with root privileges.
+- **Display Banner**: Shows a detailed banner with script information.
 - **Select Source Container**: Choose an LXC container to convert.
+- **Select Backup Storage**: Choose the storage location for the backup file.
 - **Backup Container**: Backs up the selected container.
 - **Select Target Storage**: Choose storage for the new container.
-- **Find Next Free ID**: Automatically finds the next available ID for the new container.
-- **Perform Conversion**: Converts the container to the desired privilege level.
+- **Specify New Container ID**:
+  - Prompts you to enter a new container ID.
+  - Validates the ID against existing IDs across the cluster to prevent conflicts.
+  - Offers the next free ID as the default option.
+- **Perform Conversion**:
+  - Determines the current privilege status of the container.
+  - Converts the container to the opposite privilege mode.
 - **Manage LXC States**: Option to shut down the source and start the target container.
 - **Cleanup Temporary Files**: Option to remove temporary backup files.
+- **Summary Report**: Displays a summary of all actions performed.
 
 ## Disclaimer
 I am in no way related to Proxmox Server Solutions GmbH
@@ -63,8 +76,8 @@ This project is licensed under the GPL-3.0 License
 **Florian Kefferpuetz**  - Initial work.
 
 ## Contributors
-haemka
+haemka - added extended Cluster support.
+ebertland - suggested select_container_id and provided code draft.
 
 ## Acknowledgments
-Thanks to Proxmox Team and tteck for the useful scripts at https://github.com/tteck/Proxmox 
-
+Thanks to Proxmox Team and tteck (RIP 11/2024) for the useful scripts at https://github.com/tteck/Proxmox

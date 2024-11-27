@@ -2,6 +2,10 @@
 
 All notable changes to the "proxmox-lxc-privilege-converter" project will be documented in this file.
 
+## [1.0.5] - 2024-11-27
+### Added
+- Allowing users to select the target container ID. Built in check to identify all VM/ID Ids already in use.
+
 ## [1.0.4] - 2024-03-10
 ### Fixed
 - Unified regex for affirmative input checks, addressing inconsistencies.
