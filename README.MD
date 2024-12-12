@@ -41,7 +41,7 @@ sudo ./lxc_privilege_converter.sh
 
 5. **Or Quickstart as below:**
 
-sudo bash <(curl -L https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh)
+bash <(curl -L https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh)
 
 Follow the interactive prompts to select the source container, backup storage, target storage, and manage the conversion process.
 
