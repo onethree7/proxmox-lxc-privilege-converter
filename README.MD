@@ -23,7 +23,8 @@ The LXC Container Privilege Converter is a Bash script designed for the Proxmox 
 - **Enough free space on Backup and Target Storage**
 - **LXC containers can be snapshotted in general**
 
-## Installation1. **Clone the repository:**
+## Installation
+1. **Clone the repository:**
 
 git clone https://github.com/onethree7/proxmox-lxc-privilege-converter
 
