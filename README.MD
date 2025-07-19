@@ -2,83 +2,77 @@
 
 ## Overview
 
-The LXC Container Privilege Converter is a Bash script designed for the Proxmox Virtual Environment (PVE). It facilitates the conversion of LXC containers between privileged and unprivileged states. This script automates the process of backing up an existing container, restoring it to a new container with the desired privilege mode, and manages container states seamlessly.
+Convert LXC containers between privileged and unprivileged modes in Proxmox VE. Automates vzdump backup, container restore, and privilege switch with interactive selection.
 
 ## Features
 
-- **Interactive Selection**: Easy-to-use interactive prompts for selecting containers, backup storage, and target storage.
-- **Custom Container ID Selection**: Specify a new container ID during the conversion process, with validation to prevent ID conflicts across the cluster.
-- **Cluster-Aware ID Retrieval**: Automatically retrieves all used VM and LXC IDs across the cluster to prevent ID conflicts.
-- **Automated Backup and Restore**: Automates the `vzdump` backup process and restores to a new container.
-- **Privilege Level Conversion**: Converts containers from unprivileged to privileged and vice versa.
-- **State Management**: Manages the states of the source and target containers, including shutdown and startup options.
-- **Cleanup Options**: Offers options to clean up temporary backup files after conversion.
-- **Enhanced Help Message**: Access detailed usage instructions via `-h` or `--help` flags.
+- Interactive menu for container and storage selection (shows priv/unpriv flag).
+- Validates new container ID against all cluster VMs and LXCs.
+- Automatic vzdump backup and restore / PBS backup and restor
+- Detects and switches privilege mode from unprivileged to priviliged and vise versa.
+- Handles Proxmox Backup Server (PBS) and normal storage.
+- Optional shutdown/start logic for containers, including force kill.
+- Prompts for cleanup of backup files after conversion.
+- Root check, strict error handling.
 
 ## Prerequisites
 
-- **Proxmox Virtual Environment**
-- **Root access on the Proxmox server**
-- **LXC containers set up within Proxmox**
-- **Enough free space on Backup and Target Storage**
-- **LXC containers can be snapshotted in general**
+- Proxmox VE with root access
+- Sufficient storage for local vzdump / Proxmox Backup Server
+- LXC containers set up
 
-## Installation
-1. **Clone the repository:**
+## Installation & Usage
 
-`git clone https://github.com/onethree7/proxmox-lxc-privilege-converter`
+```bash
+# The boring way:
+git clone https://github.com/onethree7/proxmox-lxc-privilege-converter
+cd proxmox-lxc-privilege-converter
+chmod +x lxc_privilege_converter.sh
+sudo ./lxc_privilege_converter.sh
 
-2. **Navigate to the script directory:**
+# Quickstart:
+bash <(curl -L https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh)
+```
 
-`cd proxmox-lxc-privilege-converter`
+- Follow the menu to select container, backup storage, target storage, and new ID.
+- Script will handle all steps and print a summary at the end. 
 
-3. **Make the script executable:**
+## Workflow
 
-`chmod +x lxc_privilege_converter.sh`
+- Banner
+- Root check
+- Select source container
+- Select backup storage
+- perform vzdump/PBS backup -> backup storage
+- Select target storage
+- Select or confirm new container ID (validated)
+- Restore with updated privilege state -> target storage
+- Optionally shutdown/start containers (with force kill option/3min)
+- Optionally delete backup (only local vzdumps)
+- Shows a summary
 
-4. **Run the script with root credentials**
+## Changelog
 
-`sudo ./lxc_privilege_converter.sh`
-
-5. **Or Quickstart as below:**
-
-`bash <(curl -L https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh)`
-
-Follow the interactive prompts to select the source container, backup storage, target storage, and manage the conversion process.
-
-## Script Workflow
-- **Check Root Access**: Ensures the script is run with root privileges.
-- **Display Banner**: Shows a detailed banner with script information.
-- **Select Source Container**: Choose an LXC container to convert.
-- **Select Backup Storage**: Choose the storage location for the backup file.
-- **Backup Container**: Backs up the selected container.
-- **Select Target Storage**: Choose storage for the new container.
-- **Specify New Container ID**:
-  - Prompts you to enter a new container ID.
-  - Validates the ID against existing IDs across the cluster to prevent conflicts.
-  - Offers the next free ID as the default option.
-- **Perform Conversion**:
-  - Determines the current privilege status of the container.
-  - Converts the container to the opposite privilege mode.
-- **Manage LXC States**: Option to shut down the source and start the target container.
-- **Cleanup Temporary Files**: Option to remove temporary backup files.
-- **Summary Report**: Displays a summary of all actions performed.
-
-## Disclaimer
-I am in no way related to Proxmox Server Solutions GmbH
-
-## Contributing
-Contributions to improve the script or add new features are welcome.
+See CHANGELOG.md for version info.
 
 ## License
-This project is licensed under the GPL-3.0 License
+
+GPL-3.0
 
 ## Author
-**Florian Kefferpuetz**  - Initial work.
+
+Florian Kefferpuetz
 
 ## Contributors
-haemka - added extended Cluster support.
-ebertland - suggested select_container_id and provided code draft.
 
-## Acknowledgments
-Thanks to Proxmox Team and tteck (RIP 11/2024) for the useful scripts at https://github.com/tteck/Proxmox
+haemka, ebertland
+
+## Disclaimer
+
+No relation to Proxmox Server Solutions GmbH.
+
+## Thanks
+
+Proxmox team, Community Scripts and tteck (RIP 11/2024), see: https://github.com/tteck/Proxmox & https://community-scripts.github.io/ProxmoxVE/
+
+Please let me know with an Issue report if you find bugs or have a feature request.
