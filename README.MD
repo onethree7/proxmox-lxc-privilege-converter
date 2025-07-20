@@ -6,11 +6,11 @@ Convert LXC containers between privileged and unprivileged modes in Proxmox VE. 
 
 ## Features
 
-- Interactive menu for container and storage selection (shows priv/unpriv flag).
+- Interactive menu for container and storage selection.
 - Validates new container ID against all cluster VMs and LXCs.
 - Automatic vzdump backup and restore / PBS backup and restore. 
 - Detects and switches privilege mode from unprivileged to priviliged and vise versa.
-- Handles Proxmox Backup Server (PBS) and local Backupstorage for the conversion Temp Files.
+- Handles Proxmox Backup Server (PBS) and local Backup Storage for the conversion Temp Files.
 - Optional shutdown/start logic for containers, including force kill.
 - Prompts for cleanup of backup files after conversion.
 - Root check, strict error handling.
@@ -28,7 +28,7 @@ Convert LXC containers between privileged and unprivileged modes in Proxmox VE. 
 git clone https://github.com/onethree7/proxmox-lxc-privilege-converter
 cd proxmox-lxc-privilege-converter
 chmod +x lxc_privilege_converter.sh
-sudo ./lxc_privilege_converter.sh
+./lxc_privilege_converter.sh
 
 # Quickstart:
 bash <(curl -L https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/main/lxc_privilege_converter.sh)
