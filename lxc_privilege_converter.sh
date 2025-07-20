@@ -63,7 +63,7 @@ select_backup_storage() {
         echo "Invalid selection. Please try again."
     done
 }
-
+ct/129/2025-07-20T01:39:25Z
 backup_container() {
     echo -e "Performing backup of container $CONTAINER_ID...\n"
     vzdump_output=$(mktemp)
@@ -126,7 +126,7 @@ restore_container() {
 
     if [[ "$BACKUP_STORAGE_TYPE" = "pbs" ]]; then
         RESTORE_SRC="$BACKUP_STORAGE:backup/$BACKUP_VOLID"
-        RESTORE_ARGS="\"$NEW_CONTAINER_ID\" \"$RESTORE_SRC\" --storage \"$TARGET_STORAGE\""
+        RESTORE_ARGS="\"$NEW_CONTAINER_ID\" \"$RESTORE_SRC\" --storage \"$TARGET_STORAGE\" -ignore-unpack-errors 1"
     else
         RESTORE_SRC="$BACKUP_PATH"
         RESTORE_ARGS="\"$NEW_CONTAINER_ID\" \"$RESTORE_SRC\" --storage \"$TARGET_STORAGE\" -ignore-unpack-errors 1"
