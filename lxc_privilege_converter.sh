@@ -103,10 +103,10 @@ select_container_id() {
     next_free_id=$(pvesh get /cluster/nextid)
     get_used_ids
     while true; do
-        read -r -p "Enter a new container ID (or press Enter to use next free ID [$next_free_id]): " NEW_CONTAINER_ID
+        read -r -p "Enter a new container ID (>=100, or Enter for [$next_free_id]): " NEW_CONTAINER_ID
         NEW_CONTAINER_ID="${NEW_CONTAINER_ID:-$next_free_id}"
-        [[ "$NEW_CONTAINER_ID" =~ ^[0-9]+$ ]] || { echo "Invalid input. Please enter a valid numeric container ID."; continue; }
-        for used in "${USED_IDS[@]}"; do [[ "$used" = "$NEW_CONTAINER_ID" ]] && { echo "Already used container ID. Please try again."; continue 2; }; done
+        [[ "$NEW_CONTAINER_ID" =~ ^[0-9]+$ && $NEW_CONTAINER_ID -ge 100 ]] || { echo "Invalid ID."; continue; }
+        for used in "${USED_IDS[@]}"; do [[ "$used" = "$NEW_CONTAINER_ID" ]] && { echo "Already used."; continue 2; }; done
         break
     done
 }

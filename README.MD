@@ -36,8 +36,8 @@ bash <(curl -L https://github.com/onethree7/proxmox-lxc-privilege-converter/raw/
 
 - Follow the menu to select container, backup storage, target storage, and new ID.
 - Script will handle all steps and print a summary at the end. 
-- PBS as Backupstorage is supported, but limited when cgroups or devices (like hw-passthrough) exist (on conversions to unprivileged).
-- Local Backupstorage is recommended in most cases and not similarily limited.
+- Proxmox Backup Server(PBS) is supported, but due to PBS/Proxmox limitations restoring to unprivileged can fail if config has device or cgroup binds.  
+- Local Backupstorage is recommended in most cases and works best.
 
 ## Workflow
 
