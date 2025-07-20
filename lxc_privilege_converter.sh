@@ -63,7 +63,7 @@ select_backup_storage() {
         echo "Invalid selection. Please try again."
     done
 }
-ct/129/2025-07-20T01:39:25Z
+
 backup_container() {
     echo -e "Performing backup of container $CONTAINER_ID...\n"
     vzdump_output=$(mktemp)
