@@ -10,7 +10,7 @@ Convert LXC containers between privileged and unprivileged modes in Proxmox VE. 
 - Validates new container ID against all cluster VMs and LXCs.
 - Automatic vzdump backup and restore / PBS backup and restore. 
 - Detects and switches privilege mode from unprivileged to privileged and vice versa.
-- Handles Proxmox Backup Server (PBS) and local Backup Storage for the conversion Temp Files.
+- Handles Proxmox Backup Server (PBS) and local backup storage for the conversions temporary files.
 - Optional shutdown/start logic for containers, including force kill.
 - Prompts for cleanup of backup files after conversion.
 - Root check, strict error handling.
